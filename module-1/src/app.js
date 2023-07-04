@@ -8,8 +8,13 @@ const manager = new ProductManager("./products.json");
 app.get("/products", async (req, res) => {
   const { limit } = req.query;
   const products = await manager.getProducts();
+  const productLimit = [];
+
   if (limit) {
-    res.send(products.filter((prod) => prod.id <= limit));
+    for (let i = 0; i < +limit; i++) {
+      productLimit.push(products[i]);
+    }
+    res.send(productLimit);
   } else {
     res.send(products);
   }
