@@ -1,30 +1,12 @@
 import express from "express";
-import ProductManager from "./productManager.js";
+import productsRouter from "./routes/products.js";
+import cartsRouter from "./routes/carts.js";
 
 const app = express();
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const manager = new ProductManager("./products.json");
-
-app.get("/products", async (req, res) => {
-  const { limit } = req.query;
-  const products = await manager.getProducts();
-  const productLimit = [];
-
-  if (limit) {
-    for (let i = 0; i < +limit; i++) {
-      productLimit.push(products[i]);
-    }
-    res.send(productLimit);
-  } else {
-    res.send(products);
-  }
-});
-
-app.get("/products/:pid", async (req, res) => {
-  const { pid } = req.params;
-  const product = await manager.getProductById(pid);
-  res.send(product);
-});
+app.use("/api/products", productsRouter);
+app.use("/api/carts", cartsRouter);
 
 app.listen(8080, () => {
   console.log("¡Server conectado!");

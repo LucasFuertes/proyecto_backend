@@ -6,7 +6,16 @@ export default class ProductManager {
     this.path = path;
   }
 
-  addProduct = async (title, description, price, thumbnail, code, stock) => {
+  addProduct = async ({
+    title,
+    description,
+    price,
+    thumbnail,
+    code,
+    stock,
+    status,
+    category,
+  }) => {
     const file = await fs.readFile(this.path, "utf-8");
     this.products = JSON.parse(file);
 
@@ -15,27 +24,39 @@ export default class ProductManager {
       title,
       description,
       price,
-      thumbnail,
+      thumbnail: [],
       code,
       stock,
+      status,
+      category,
     };
+
+    product.thumbnail.push(thumbnail);
+
+    if (this.products.find((prod) => prod.id >= product.id)) {
+      const lastProduct = this.products.pop();
+      product.id = lastProduct.id + 1;
+      this.products.push(lastProduct);
+    }
 
     if (
       product.title &&
       product.description &&
       product.price &&
-      product.thumbnail &&
       product.code &&
-      product.stock
+      product.stock &&
+      product.status &&
+      product.category
     ) {
       if (!this.products.find((prod) => prod.code === product.code)) {
         this.products.push(product);
         await fs.writeFile(this.path, JSON.stringify(this.products));
+        return "¡Producto creado!";
       } else {
-        console.log(`El código del producto ${title} ya existe`);
+        return `El código del producto ${title} ya existe`;
       }
     } else {
-      console.log(`El producto ${title} lleva un campo vacío`);
+      return `El producto ${title} lleva un campo vacío`;
     }
   };
 
@@ -61,7 +82,7 @@ export default class ProductManager {
     const file = await fs.readFile(this.path, "utf-8");
     this.products = JSON.parse(file);
 
-    const index = this.products.findIndex((prods) => prods.id === id);
+    const index = this.products.findIndex((prods) => prods.id == id);
     if (index !== -1) {
       const updatedProduct = { ...this.products[index], ...element };
       this.products[index] = updatedProduct;
@@ -76,7 +97,7 @@ export default class ProductManager {
     const file = await fs.readFile(this.path, "utf-8");
     this.products = JSON.parse(file);
 
-    const deletedProduct = this.products.filter((prods) => prods.id !== id);
+    const deletedProduct = this.products.filter((prods) => prods.id != id);
     await fs.writeFile(this.path, JSON.stringify(deletedProduct));
   };
 }
