@@ -1,0 +1,9 @@
+body {
+  background-color: black;
+  color: white;
+}
+
+.form-products {
+  display: flex;
+  flex-direction: column;
+}

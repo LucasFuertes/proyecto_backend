@@ -13,7 +13,6 @@ export default class ProductManager {
     thumbnail,
     code,
     stock,
-    status,
     category,
   }) => {
     const file = await fs.readFile(this.path, "utf-8");
@@ -27,7 +26,7 @@ export default class ProductManager {
       thumbnail: [],
       code,
       stock,
-      status,
+      status: true,
       category,
     };
 

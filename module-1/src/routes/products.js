@@ -2,7 +2,7 @@ import { Router } from "express";
 import ProductManager from "../productManager.js";
 const manager = new ProductManager("./db/products.json");
 
-export const productsRouter = Router();
+const productsRouter = Router();
 
 productsRouter.get("/", async (req, res) => {
   const { limit } = req.query;
@@ -53,3 +53,5 @@ productsRouter.delete("/:pid", async (req, res) => {
   await manager.deleteProduct(pid);
   res.send({ msg: "Producto borrado" });
 });
+
+export default productsRouter;
