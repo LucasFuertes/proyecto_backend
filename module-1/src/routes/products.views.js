@@ -17,7 +17,8 @@ prodsRouterRender.get("/", async (req, res) => {
 });
 
 prodsRouterRender.get("/realtimeproducts", async (req, res) => {
-  res.render("realTimeProducts", {});
+  const products = await manager.getProducts();
+  res.render("realTimeProducts", { products: products });
 });
 
 prodsRouterRender.post("/", async (req, res) => {
