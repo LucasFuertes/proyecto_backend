@@ -1,3 +1,4 @@
+import fs from "fs/promises";
 import express from "express";
 import productsRouter from "./routes/products.js";
 import prodsRouterRender from "./routes/products.views.js";
@@ -27,8 +28,20 @@ const io = new SocketServer(appServer);
 io.on("connection", (socket) => {
   console.log(`Cliente se ha conectado con el ID ${socket.id}`);
 
-  socket.on("newProduct", (data) => {
-    console.log("Renderizando...");
-    io.emit("products", data);
+  socket.on("newProduct", async (data) => {
+    try {
+      const file = await fs.readFile("./db/products.json", "utf-8");
+      const products = JSON.parse(file);
+      const productFound = products.find((prods) => prods.title == data.title);
+      if (productFound) {
+        console.log("Renderizando...");
+        socket.broadcast.emit("products", productFound);
+      } else {
+        console.error("No se pudo renderizar el producto creado");
+      }
+    } catch {
+      console.log(data);
+      console.error("Error, no se pudo encontrar el producto");
+    }
   });
 });

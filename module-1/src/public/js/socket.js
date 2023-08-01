@@ -8,14 +8,13 @@ function productCreated() {
 
 socket.on("products", (data) => {
   let list = document.getElementById("productList");
-  let product = `<div>
-                  <b>Producto {{this.id}}</b>
-                  <ul>
-                    <li>Nombre: {{this.title}}</li>
-                    <li>Descripcion: {{this.description}}</li>
-                    <li>Precio: {{this.price}}</li>
-                  </ul>
-                  <button id={{this.id}} onclick="productDeleted()">Eliminar producto</button>
-                </div>`;
-  list.append(product);
+  let containerProduct = document.createElement("div");
+  containerProduct.innerHTML = `<b>Producto ${data.id}</b>
+                                <ul>
+                                  <li>Nombre: ${data.title}</li>
+                                  <li>Descripcion: ${data.description}</li>
+                                  <li>Precio: ${data.price}</li>
+                                </ul>
+                                <button id=${data.id} onclick="productDeleted()">Eliminar producto</button>`;
+  list.append(containerProduct);
 });
