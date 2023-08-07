@@ -6,8 +6,18 @@ import cartsRouter from "./routes/carts.js";
 import handlebars from "express-handlebars";
 import __dirname from "./dirname.js";
 import { Server as SocketServer } from "socket.io";
+import mongoose from "mongoose";
+import { msgsRouterRender } from "./routes/chat.views.js";
 
 const app = express();
+
+const dbConnection = mongoose.connect(
+  `mongodb+srv://lucasfuertesmr:p75HJ00ZHRkRofxm@ecommerce.etxylxe.mongodb.net/ecommerce?retryWrites=true&w=majority`
+);
+dbConnection
+  .then(() => console.log("Base de datos Mongo conectada!"))
+  .catch((e) => console.error(e));
+
 app.use(express.static(`${__dirname}/public`));
 
 app.engine("handlebars", handlebars.engine());
@@ -20,6 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/products", prodsRouterRender);
+app.use("/chat", msgsRouterRender);
 
 const appServer = app.listen(8080, () => console.log("¡Server conectado!"));
 

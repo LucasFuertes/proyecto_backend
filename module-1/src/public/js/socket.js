@@ -1,10 +1,11 @@
 console.log("Hellooooooooo");
 const socket = io();
 
-function productCreated() {
-  let form = document.getElementById("productsForm");
+let form = document.getElementById("productsForm");
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
   socket.emit("newProduct", form.value);
-}
+});
 
 socket.on("products", (data) => {
   let list = document.getElementById("productList");
