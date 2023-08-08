@@ -6,10 +6,13 @@ import cartsRouter from "./routes/carts.js";
 import handlebars from "express-handlebars";
 import __dirname from "./dirname.js";
 import { Server as SocketServer } from "socket.io";
+import { Server as HTTPServer } from "http";
 import mongoose from "mongoose";
 import { msgsRouterRender } from "./routes/chat.views.js";
 
 const app = express();
+
+const httpServer = HTTPServer(app);
 
 const dbConnection = mongoose.connect(
   `mongodb+srv://lucasfuertesmr:p75HJ00ZHRkRofxm@ecommerce.etxylxe.mongodb.net/ecommerce?retryWrites=true&w=majority`
@@ -32,12 +35,22 @@ app.use("/api/carts", cartsRouter);
 app.use("/products", prodsRouterRender);
 app.use("/chat", msgsRouterRender);
 
-const appServer = app.listen(8080, () => console.log("¡Server conectado!"));
+const io = new SocketServer(httpServer);
 
-const io = new SocketServer(appServer);
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
 
+app.get("/", (req, res) => {
+  res.render("join");
+});
+
+const msg = [{ user: "UserDefault", message: "¡Bienvenido!" }];
 io.on("connection", (socket) => {
   console.log(`Cliente se ha conectado con el ID ${socket.id}`);
+
+  socket.emit("historial", msg);
 
   socket.on("newProduct", async (data) => {
     try {
@@ -56,3 +69,5 @@ io.on("connection", (socket) => {
     }
   });
 });
+
+httpServer.listen(8080, () => console.log("Server conectado!"));

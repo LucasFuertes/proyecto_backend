@@ -1,4 +1,3 @@
-console.log("Hellooooooooo");
 const socket = io();
 
 let form = document.getElementById("productsForm");

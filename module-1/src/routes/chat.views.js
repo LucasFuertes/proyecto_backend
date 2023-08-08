@@ -4,8 +4,7 @@ import msgModel from "../dao/models/msg.schema.js";
 export const msgsRouterRender = Router();
 
 msgsRouterRender.get("/", async (req, res) => {
-  const dbMsgs = await msgModel.find();
-  res.render("chat", { dbMsgs });
+  res.render("chat");
 });
 
 msgsRouterRender.post("/", async (req, res) => {
