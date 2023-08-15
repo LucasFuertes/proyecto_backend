@@ -1,19 +1,13 @@
 import { Router } from "express";
-import ProductManager from "../dao/productManager.js";
-const manager = new ProductManager("./db/products.json");
+import ProductManager from "../dao/mongo/productManager.js";
+const manager = new ProductManager();
 
 export const prodsRouterRender = Router();
 
 prodsRouterRender.get("/", async (req, res) => {
-  const { limit } = req.query;
-  const products = await manager.getProducts();
-
-  if (limit) {
-    const productLimit = products.slice(0, limit);
-    res.render("home", { products: productLimit });
-  } else {
-    res.render("home", { products: products });
-  }
+  const { limit = 5, page = 1, order, query } = req.query;
+  const status = await manager.getProducts({ limit, page, order, query });
+  res.render("home", { productsList: status.products.docs });
 });
 
 prodsRouterRender.get("/realtimeproducts", async (req, res) => {

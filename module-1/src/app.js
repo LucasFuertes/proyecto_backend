@@ -18,7 +18,7 @@ const dbConnection = mongoose.connect(
   `mongodb+srv://lucasfuertesmr:p75HJ00ZHRkRofxm@ecommerce.etxylxe.mongodb.net/ecommerce?retryWrites=true&w=majority`
 );
 dbConnection
-  .then(() => console.log("Base de datos Mongo conectada!"))
+  .then(() => console.log("¡Base de datos Mongo conectada!"))
   .catch((e) => console.error(e));
 
 app.use(express.static(`${__dirname}/public`));
