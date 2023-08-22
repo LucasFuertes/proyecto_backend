@@ -9,6 +9,10 @@ import { Server as SocketServer } from "socket.io";
 import { Server as HTTPServer } from "http";
 import mongoose from "mongoose";
 import { msgsRouterRender } from "./routes/chat.views.js";
+import session from "express-session";
+import MongoStore from "connect-mongo";
+import usersRouterRender from "./routes/users.views.js";
+import usersRouter from "./routes/users.js";
 
 const app = express();
 
@@ -27,13 +31,27 @@ app.engine("handlebars", handlebars.engine());
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "handlebars");
 
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(
+  session({
+    secret: "87312yr92743e8r34",
+    resave: false,
+    saveUninitialized: true,
+    store: new MongoStore({
+      mongoUrl: `mongodb+srv://lucasfuertesmr:p75HJ00ZHRkRofxm@ecommerce.etxylxe.mongodb.net/ecommerce?retryWrites=true&w=majority`,
+      ttl: 15,
+    }),
+    ttl: 15,
+  })
+);
 
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
+app.use("/api/sessions", usersRouter);
 app.use("/products", prodsRouterRender);
 app.use("/chat", msgsRouterRender);
+app.use("/", usersRouterRender);
 
 const io = new SocketServer(httpServer);
 
@@ -42,9 +60,16 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", (req, res) => {
-  res.render("join");
-});
+// app.get("/", (req, res) => {
+//   console.log(req.session);
+//   if (!req.session.counter) {
+//     req.session.counter = 1;
+//     res.send("Bienvenido!");
+//   } else {
+//     req.session.counter++;
+//     res.send(`Se ha visitado la página ${req.session.counter} veces`);
+//   }
+// });
 
 const msg = [{ user: "UserDefault", message: "¡Bienvenido!" }];
 io.on("connection", (socket) => {
