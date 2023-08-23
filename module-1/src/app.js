@@ -11,7 +11,6 @@ import mongoose from "mongoose";
 import { msgsRouterRender } from "./routes/chat.views.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-import usersRouterRender from "./routes/users.views.js";
 import usersRouter from "./routes/users.js";
 
 const app = express();
@@ -40,9 +39,9 @@ app.use(
     saveUninitialized: true,
     store: new MongoStore({
       mongoUrl: `mongodb+srv://lucasfuertesmr:p75HJ00ZHRkRofxm@ecommerce.etxylxe.mongodb.net/ecommerce?retryWrites=true&w=majority`,
-      ttl: 15,
+      ttl: 3600,
     }),
-    ttl: 15,
+    ttl: 3600,
   })
 );
 
@@ -51,7 +50,6 @@ app.use("/api/carts", cartsRouter);
 app.use("/api/sessions", usersRouter);
 app.use("/products", prodsRouterRender);
 app.use("/chat", msgsRouterRender);
-app.use("/", usersRouterRender);
 
 const io = new SocketServer(httpServer);
 
@@ -59,17 +57,6 @@ app.use((req, res, next) => {
   req.io = io;
   next();
 });
-
-// app.get("/", (req, res) => {
-//   console.log(req.session);
-//   if (!req.session.counter) {
-//     req.session.counter = 1;
-//     res.send("Bienvenido!");
-//   } else {
-//     req.session.counter++;
-//     res.send(`Se ha visitado la página ${req.session.counter} veces`);
-//   }
-// });
 
 const msg = [{ user: "UserDefault", message: "¡Bienvenido!" }];
 io.on("connection", (socket) => {

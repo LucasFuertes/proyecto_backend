@@ -1,4 +1,5 @@
-<h1>Lista de productos disponibles:</h1>
+<h1>Bienvenido {{firstName}} {{lastName}}</h1>
+<h2>Lista de productos disponibles:</h2>
 {{#each productsList}}
 <div>
   <b>Producto</b>
@@ -10,3 +11,6 @@
   <button>Agregar al carrito</button>
 </div>
 {{/each}}
+<form action="/api/sessions/logout" method="GET">
+<input type="submit" value="Cerrar sesion">
+</form>

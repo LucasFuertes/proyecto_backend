@@ -4,7 +4,6 @@ export default class UserManager {
   constructor() {}
 
   registerUser = async (newUser) => {
-    console.log(newUser);
     const register = await userModel.insertMany(newUser);
     if (!register) {
       return false;
@@ -14,11 +13,16 @@ export default class UserManager {
   };
 
   getUser = async (username, password) => {
-    const user = await userModel.findOne(username);
-    if (user.password != password) {
+    try {
+      const user = await userModel.findOne(username);
+      if (!user) return false;
+      if (user.password != password) {
+        return false;
+      } else {
+        return user;
+      }
+    } catch {
       return false;
-    } else {
-      return user;
     }
   };
 }
