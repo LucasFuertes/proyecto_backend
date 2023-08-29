@@ -12,6 +12,9 @@ import { msgsRouterRender } from "./routes/chat.views.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import usersRouter from "./routes/users.js";
+import InitLocalStrategy from "./config/passport.config.js";
+import passport from "passport";
+import { authManager } from "./routes/auth.views.js";
 
 const app = express();
 
@@ -45,11 +48,16 @@ app.use(
   })
 );
 
+InitLocalStrategy();
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/sessions", usersRouter);
 app.use("/products", prodsRouterRender);
 app.use("/chat", msgsRouterRender);
+app.use("/api/auth", authManager);
 
 const io = new SocketServer(httpServer);
 

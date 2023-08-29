@@ -48,9 +48,10 @@ export default class ProductManager {
           { limit, page, sort: sortOpcion }
         );
       }
+      const products = dbProducts.docs;
       const result = {
         msg: "¡Productos encontrados!",
-        products: dbProducts,
+        products,
       };
       return result;
     } catch (e) {

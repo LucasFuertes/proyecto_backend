@@ -5,16 +5,17 @@ const manager = new ProductManager();
 const prodsRouterRender = Router();
 
 const notLogged = (req, res, next) => {
-  if (!req.session.user) return res.redirect("/api/sessions/login");
+  if (!req.user) return res.redirect("/api/sessions/login");
   next();
 };
 
 prodsRouterRender.get("/", notLogged, async (req, res) => {
-  const { firstName, lastName } = req.session.user;
+  const { firstName, lastName } = req.user;
   const { limit = 5, page = 1, order, query } = req.query;
   const status = await manager.getProducts({ limit, page, order, query });
+  console.log(status.products);
   res.render("home", {
-    productsList: status.products.docs,
+    productsList: status.products,
     firstName,
     lastName,
   });
