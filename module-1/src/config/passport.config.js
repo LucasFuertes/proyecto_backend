@@ -17,13 +17,6 @@ const InitLocalStrategy = () => {
         const userExist = await manager.getUserByName(username);
         if (userExist) return done(null, false);
 
-        let role;
-        if (email == "adminCoder@coder.com" && password == "adminCod3r123") {
-          role = "admin";
-        } else {
-          role = "user";
-        }
-
         const user = await manager.registerUser({
           firstName,
           lastName,
@@ -31,7 +24,6 @@ const InitLocalStrategy = () => {
           email,
           age,
           password,
-          role,
         });
 
         return done(null, user);
@@ -59,11 +51,9 @@ const InitLocalStrategy = () => {
       {
         clientID: "Iv1.f93688b575764776",
         clientSecret: "5d3fb2d20073b15c651f1ba9e0dc4888ac1d9fa6",
-        callbackURL: "http://localhost:8080/api/auth/github",
+        callbackURL: "http://localhost:8080/api/auth/login",
       },
       async (accessToken, refreshToken, profile, done) => {
-        console.log(profile);
-
         const username = profile._json.login;
         const user = await manager.getUserByName(username);
 
@@ -76,10 +66,7 @@ const InitLocalStrategy = () => {
           email: profile._json.email,
           age: "",
           password: "",
-          role:
-            profile._json.email == "adminCoder@coder.com" ? "admin" : "user",
         });
-
         done(null, createUser);
       }
     )
