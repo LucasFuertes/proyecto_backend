@@ -1,22 +1,14 @@
 import { Router } from "express";
-// import UserManager from "../dao/mongo/userManager.js";
 import passport from "passport";
+import { logged, notLogged } from "../utils/redirection.js";
 
-// const admin = new UserManager();
 const usersRouter = Router();
-
-const logged = (req, res, next) => {
-  if (req.user) return res.redirect("/products");
-  next();
-};
-
-const notLogged = (req, res, next) => {
-  if (!req.user) return res.redirect("/api/sessions/login");
-  next();
-};
 
 usersRouter.get("/login", logged, async (req, res) => {
   res.render("login");
+});
+usersRouter.get("/register", logged, (req, res) => {
+  res.render("register");
 });
 
 usersRouter.post(
@@ -28,10 +20,6 @@ usersRouter.post(
   async (req, res) => {}
 );
 
-usersRouter.get("/register", logged, (req, res) => {
-  res.render("register");
-});
-
 usersRouter.post(
   "/register",
   passport.authenticate("register", {
@@ -39,6 +27,16 @@ usersRouter.post(
     failureRedirect: "/register",
   }),
   async (req, res) => {}
+);
+
+usersRouter.get(
+  "/current",
+  passport.authenticate("current-user"),
+  async (req, res) => {
+    const user = req.user;
+    if (!user) return res.send("No existe usuario loggeado");
+    res.send(user);
+  }
 );
 
 usersRouter.get("/logout", notLogged, (req, res) => {

@@ -14,9 +14,13 @@ export default class UserManager {
     return user;
   };
 
+  getUserByEmail = async (email) => {
+    const user = await userModel.findOne({ email: email });
+    return user;
+  };
+
   registerUser = async (newUser) => {
     try {
-      console.log(newUser);
       const salt = await bcrypt.genSalt(10);
       newUser.password = await bcrypt.hash(newUser.password, salt);
       const register = await userModel.insertMany(newUser);

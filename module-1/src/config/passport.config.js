@@ -14,8 +14,11 @@ const InitLocalStrategy = () => {
       async (req, username, password, done) => {
         const { firstName, lastName, email, age } = req.body;
 
-        const userExist = await manager.getUserByName(username);
-        if (userExist) return done(null, false);
+        const userNameExist = await manager.getUserByName(username);
+        if (userNameExist) return done("Nombre de usuario ya existe");
+
+        const userEmailExist = await manager.getUserByName(email);
+        if (userEmailExist) return done("Email de usuario ya existe");
 
         const user = await manager.registerUser({
           firstName,
@@ -37,10 +40,18 @@ const InitLocalStrategy = () => {
       { passReqToCallback: true },
       async (req, username, password, done) => {
         const user = await manager.loginUser(username, password);
-        console.log(user);
         if (!user) return done("Nombre de usuario o contraseña incorrecta");
-
         return done(null, user);
+      }
+    )
+  );
+
+  passport.use(
+    "current-user",
+    new local.Strategy(
+      { passReqToCallback: true },
+      async (req, username, password, done) => {
+        return req.user;
       }
     )
   );

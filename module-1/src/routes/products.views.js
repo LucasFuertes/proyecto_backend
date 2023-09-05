@@ -1,13 +1,9 @@
 import { Router } from "express";
 import ProductManager from "../dao/mongo/productManager.js";
+import { notLogged } from "../utils/redirection.js";
 const manager = new ProductManager();
 
 const prodsRouterRender = Router();
-
-const notLogged = (req, res, next) => {
-  if (!req.user) return res.redirect("/api/sessions/login");
-  next();
-};
 
 prodsRouterRender.get("/", notLogged, async (req, res) => {
   const { firstName, lastName } = req.user;
