@@ -41,6 +41,7 @@ const InitLocalStrategy = () => {
       async (req, username, password, done) => {
         const user = await manager.loginUser(username, password);
         if (!user) return done("Nombre de usuario o contraseña incorrecta");
+
         return done(null, user);
       }
     )

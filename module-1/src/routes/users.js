@@ -1,8 +1,10 @@
 import { Router } from "express";
 import passport from "passport";
+import UserManager from "../dao/mongo/userManager.js";
 import { logged, notLogged } from "../utils/redirection.js";
 
 const usersRouter = Router();
+const manager = new UserManager();
 
 usersRouter.get("/login", logged, async (req, res) => {
   res.render("login");
@@ -39,6 +41,12 @@ usersRouter.get("/logout", notLogged, (req, res) => {
   req.session.destroy((err) => {
     res.redirect("/api/sessions/login");
   });
+});
+
+usersRouter.get("/:uid", async (req, res) => {
+  const { uid } = req.params;
+  const user = await manager.getUserById(uid);
+  res.send(user);
 });
 
 export default usersRouter;
