@@ -29,15 +29,11 @@ usersRouter.post(
   async (req, res) => {}
 );
 
-usersRouter.get(
-  "/current",
-  passport.authenticate("current-user"),
-  async (req, res) => {
-    const user = req.user;
-    if (!user) return res.send("No existe usuario loggeado");
-    res.send(user);
-  }
-);
+usersRouter.get("/current", async (req, res) => {
+  const user = req.user;
+  if (!user) return res.send("No existe usuario loggeado");
+  res.send({ user: user });
+});
 
 usersRouter.get("/logout", notLogged, (req, res) => {
   req.session.destroy((err) => {
