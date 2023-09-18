@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import express from "express";
-import productsRouter from "./routes/products.js";
+import productsRouter from "./routes/products.router.js";
 import prodsRouterRender from "./routes/products.views.js";
 import cartsRouter from "./routes/carts.js";
 import handlebars from "express-handlebars";
