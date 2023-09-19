@@ -2,7 +2,7 @@ import fs from "fs/promises";
 import express from "express";
 import productsRouter from "./routes/products.router.js";
 import prodsRouterRender from "./routes/products.views.js";
-import cartsRouter from "./routes/carts.js";
+import cartsRouter from "./routes/carts.router.js";
 import handlebars from "express-handlebars";
 import __dirname from "./dirname.js";
 import { Server as SocketServer } from "socket.io";
