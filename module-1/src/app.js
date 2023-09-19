@@ -11,10 +11,11 @@ import mongoose from "mongoose";
 import { msgsRouterRender } from "./routes/chat.views.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-import usersRouter from "./routes/users.js";
+import usersRouterRender from "./routes/users.views.js";
 import InitLocalStrategy from "./config/passport.config.js";
 import passport from "passport";
 import { authManager } from "./routes/auth.views.js";
+import usersRouter from "./routes/users.router.js";
 
 const app = express();
 
@@ -55,6 +56,7 @@ app.use(passport.session());
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/sessions", usersRouter);
+app.use("/api/sessions", usersRouterRender);
 app.use("/products", prodsRouterRender);
 app.use("/chat", msgsRouterRender);
 app.use("/api/auth", authManager);

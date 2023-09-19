@@ -1,9 +1,8 @@
 import passport from "passport";
 import local from "passport-local";
-import UserManager from "../dao/mongo/userManager.js";
+import * as UserService from "../services/users.service.js";
 import GithubStrategy from "passport-github2";
 
-const manager = new UserManager();
 local.Strategy;
 
 const InitLocalStrategy = () => {
@@ -14,13 +13,13 @@ const InitLocalStrategy = () => {
       async (req, username, password, done) => {
         const { firstName, lastName, email, age } = req.body;
 
-        const userNameExist = await manager.getUserByName(username);
+        const userNameExist = await UserService.getUserByName(username);
         if (userNameExist) return done("Nombre de usuario ya existe");
 
-        const userEmailExist = await manager.getUserByName(email);
+        const userEmailExist = await UserService.getUserByEmail(email);
         if (userEmailExist) return done("Email de usuario ya existe");
 
-        const user = await manager.registerUser({
+        const user = await UserService.registerUser({
           firstName,
           lastName,
           username,
@@ -39,7 +38,7 @@ const InitLocalStrategy = () => {
     new local.Strategy(
       { passReqToCallback: true },
       async (req, username, password, done) => {
-        const user = await manager.loginUser(username, password);
+        const user = await UserService.loginUser(username, password);
         if (!user) return done("Nombre de usuario o contraseña incorrecta");
 
         return done(null, user);
