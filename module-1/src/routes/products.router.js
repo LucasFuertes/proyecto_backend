@@ -1,5 +1,6 @@
 import { Router } from "express";
 import * as ProductController from "../controllers/products.controller.js";
+// import { onlyAdmin } from "../utils/redirection.js";
 
 const productsRouter = Router();
 

@@ -17,4 +17,6 @@ cartsRouter.delete("/:cid", CartController.DELETEAllProducts);
 
 cartsRouter.put("/:cid/products/:pid", CartController.PUTQuantity);
 
+cartsRouter.get("/:cid/purchase", CartController.GETTicket);
+
 export default cartsRouter;

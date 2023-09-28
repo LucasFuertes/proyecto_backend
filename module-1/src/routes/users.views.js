@@ -4,7 +4,7 @@ import { logged, notLogged } from "../utils/redirection.js";
 
 const usersRouterRender = Router();
 
-usersRouterRender.get("/login", logged, async (req, res) => {
+usersRouterRender.get("/", logged, async (req, res) => {
   res.render("login");
 });
 usersRouterRender.get("/register", logged, (req, res) => {
@@ -12,10 +12,10 @@ usersRouterRender.get("/register", logged, (req, res) => {
 });
 
 usersRouterRender.post(
-  "/login",
+  "/",
   passport.authenticate("login", {
     successRedirect: "/products",
-    failureRedirect: "/login",
+    failureRedirect: "/",
   }),
   async (req, res) => {}
 );
@@ -31,7 +31,7 @@ usersRouterRender.post(
 
 usersRouterRender.get("/logout", notLogged, (req, res) => {
   req.session.destroy((err) => {
-    res.redirect("/api/sessions/login");
+    res.redirect("/");
   });
 });
 

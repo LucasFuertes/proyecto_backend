@@ -1,6 +1,9 @@
 import CartDAO from "../dao/mongo/cart.dao.js";
+import { CartDTO } from "../dto/cart.dto.js";
+import ProductDAO from "../dao/mongo/product.dao.js";
 
 const cartDAO = new CartDAO();
+const productDAO = new ProductDAO();
 
 export const getAllCarts = async () => {
   try {
@@ -147,4 +150,26 @@ export const putQuantity = async (cartId, productId, newQuantity) => {
     };
     return result;
   }
+};
+
+export const getTicket = async (cartId) => {
+  const cartUser = await cartDAO.findById(cartId);
+  const cart = cartUser.toObject();
+  let totalAmount = 0;
+  let productsWithoutStock = [];
+  cart.products.map(async (prods) => {
+    if (prods.product.stock >= prods.quantity) {
+      let updateStock = prods.product.stock - prods.quantity;
+      await productDAO.update(prods.product._id, { stock: updateStock });
+      totalAmount = totalAmount + prods.product.price;
+    } else {
+      let indexProduct = cart.products.findIndex((pr) => pr._id == prods._id);
+      productsWithoutStock = cart.products.filter(
+        (prod) => prod._id == prods._id
+      );
+      cart.products.splice(indexProduct, 1);
+    }
+  });
+  const completedPurchase = new CartDTO(cart);
+  return completedPurchase;
 };

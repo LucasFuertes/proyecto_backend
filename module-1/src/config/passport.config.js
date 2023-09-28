@@ -2,6 +2,7 @@ import passport from "passport";
 import local from "passport-local";
 import * as UserService from "../services/users.service.js";
 import GithubStrategy from "passport-github2";
+import { GetUser } from "../dto/user.dto.js";
 
 local.Strategy;
 
@@ -38,20 +39,11 @@ const InitLocalStrategy = () => {
     new local.Strategy(
       { passReqToCallback: true },
       async (req, username, password, done) => {
-        const user = await UserService.loginUser(username, password);
-        if (!user) return done("Nombre de usuario o contraseña incorrecta");
+        const dataUser = await UserService.loginUser(username, password);
+        console.log(dataUser);
+        if (!dataUser) return done("Nombre de usuario o contraseña incorrecta");
 
-        return done(null, user);
-      }
-    )
-  );
-
-  passport.use(
-    "current-user",
-    new local.Strategy(
-      { passReqToCallback: true },
-      async (req, username, password, done) => {
-        return req.user;
+        return done(null, dataUser);
       }
     )
   );
@@ -66,11 +58,11 @@ const InitLocalStrategy = () => {
       },
       async (accessToken, refreshToken, profile, done) => {
         const username = profile._json.login;
-        const user = await manager.getUserByName(username);
+        const user = await UserService.getUserByName(username);
 
         if (user) return done(null, user);
 
-        const createUser = await manager.registerUser({
+        const createUser = await UserService.registerUser({
           firstName: profile._json.name.split(" ")[0],
           lastName: profile._json.name.split(" ")[1],
           username: username,
@@ -88,7 +80,7 @@ const InitLocalStrategy = () => {
   });
 
   passport.deserializeUser(async (_id, done) => {
-    const user = await manager.getUserById(_id);
+    const user = await UserService.getUserById(_id);
     done(null, user);
   });
 };

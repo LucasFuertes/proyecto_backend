@@ -40,3 +40,9 @@ export const PUTQuantity = async (req, res) => {
   const update = await CartService.putQuantity(cid, pid, newQuantity);
   res.send(update);
 };
+
+export const GETTicket = async (req, res) => {
+  const { cid } = req.params;
+  const ticket = await CartService.getTicket(cid);
+  res.send(ticket);
+};

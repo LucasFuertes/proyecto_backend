@@ -53,10 +53,10 @@ InitLocalStrategy();
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use("/", usersRouterRender);
+app.use("/api/sessions", usersRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
-app.use("/api/sessions", usersRouter);
-app.use("/api/sessions", usersRouterRender);
 app.use("/products", prodsRouterRender);
 app.use("/chat", msgsRouterRender);
 app.use("/api/auth", authManager);
