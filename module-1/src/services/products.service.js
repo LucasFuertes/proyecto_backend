@@ -1,90 +1,89 @@
 import ProductDAO from "../dao/mongo/product.dao.js";
+import CustomError from "../utils/customError.js";
+import enumError from "../utils/enumError.js";
+import {
+  newProductError,
+  getProductError,
+  getProductsError,
+} from "../utils/generateCauseError.js";
 
 const productDAO = new ProductDAO();
 
 export const getAllProducts = async ({ limit, page, order, query }) => {
-  try {
-    let sortOpcion;
-    if (order == "asc") {
-      sortOpcion = { price: 1 };
-    } else if (order == "desc") {
-      sortOpcion = { price: -1 };
-    }
-    let products;
-    if (!query) {
-      products = await productDAO.find({ limit, page, sortOpcion });
-    } else {
-      products = await productDAO.findWithFilters({
-        limit,
-        page,
-        sortOpcion,
-        query,
-      });
-    }
-    const result = {
-      error: false,
-      msg: "¡Productos encontrados!",
-      products: products.docs,
-    };
-    return result;
-  } catch (e) {
-    const result = {
-      error: true,
-      msg: "Error, no se ha podido encontrar los productos",
-      info: e,
-    };
-    return result;
+  let sortOpcion;
+  if (order == "asc") {
+    sortOpcion = { price: 1 };
+  } else if (order == "desc") {
+    sortOpcion = { price: -1 };
   }
+  let products;
+  if (!query) {
+    products = await productDAO.find({ limit, page, sortOpcion });
+  } else {
+    products = await productDAO.findWithFilters({
+      limit,
+      page,
+      sortOpcion,
+      query,
+    });
+  }
+  if (!products) {
+    CustomError.createError({
+      message: "CANNOT GET PRODUCTS",
+      cause: getProductsError(),
+      name: "Get products error",
+      code: enumError.DATABASE_ERROR,
+    });
+  }
+  const result = {
+    error: false,
+    msg: "¡Productos encontrados!",
+    products: products.docs,
+  };
+  return result;
 };
 
 export const getProductById = async (pid) => {
-  try {
-    const product = await productDAO.findById(pid);
-    let result;
-    if (!product) {
-      result = {
-        error: false,
-        msg: `El producto con el id: ${pid} no existe`,
-      };
-    } else {
-      result = {
-        error: false,
-        msg: "Producto encontrado por ID",
-        product: product,
-      };
-    }
-    return result;
-  } catch (e) {
-    const result = {
-      error: true,
-      msg: "Ha ocurrido un error durante la búsqueda",
-      info: e,
+  const product = await productDAO.findById(pid);
+  let result;
+  if (!product) {
+    CustomError.createError({
+      message: "CANNOT GET PRODUCT",
+      cause: getProductError(pid),
+      name: "Get product error",
+      code: enumError.DATABASE_ERROR,
+    });
+  } else {
+    result = {
+      error: false,
+      msg: "Producto encontrado por ID",
+      product: product,
     };
-    return result;
   }
+  return result;
 };
 
 export const postNewProduct = async (newProduct) => {
-  try {
-    if (newProduct.id) {
-      const result = {
-        msg: "Campo ID detectado. Por favor, vuelva a subir el producto sin el ID",
-      };
-      return result;
-    } else {
-      const product = await productDAO.create(newProduct);
-      const result = {
-        error: false,
-        msg: "Producto creado exitosamente",
-        info: product,
-      };
-      return result;
-    }
-  } catch (e) {
+  if (
+    !newProduct.title ||
+    !newProduct.description ||
+    !newProduct.price ||
+    !newProduct.code ||
+    !newProduct.stock ||
+    !newProduct.category
+  ) {
+    CustomError.createError({
+      message: "CANNOT NEW PRODUCT",
+      cause: newProductError(newProduct),
+      name: "New product error",
+      code: enumError.USER_INPUT_ERROR,
+    });
+  } else {
+    const product = await productDAO.create(newProduct);
     const result = {
-      error: true,
-      msg: "Ha ocurrido un error al intentar crear el producto",
-      info: e,
+      error: false,
+      msg: "Producto creado exitosamente",
+      info: product,
     };
     return result;
   }

@@ -17,6 +17,7 @@ import passport from "passport";
 import { authManager } from "./routes/auth.views.js";
 import usersRouter from "./routes/users.router.js";
 import { mocks } from "./routes/mocks.router.js";
+import ErrorHandlerMw from "./utils/error.middleware.js";
 
 const app = express();
 
@@ -93,5 +94,5 @@ io.on("connection", (socket) => {
     }
   });
 });
-
+app.use(ErrorHandlerMw);
 httpServer.listen(8080, () => console.log("Server conectado!"));
