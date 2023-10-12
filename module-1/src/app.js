@@ -18,6 +18,7 @@ import { authManager } from "./routes/auth.views.js";
 import usersRouter from "./routes/users.router.js";
 import { mocks } from "./routes/mocks.router.js";
 import ErrorHandlerMw from "./utils/error.middleware.js";
+import winston from "./utils/winston.js";
 
 const app = express();
 
@@ -38,6 +39,7 @@ app.set("view engine", "handlebars");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(winston);
 app.use(
   session({
     secret: "87312yr92743e8r34",
