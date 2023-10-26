@@ -1,7 +1,8 @@
 import enumError from "./enumError.js";
 
-const ErrorHandlerMw = (error, req, res, next) => {
+const ErrorHandlerMw = async (error, req, res, next) => {
   console.log(error);
+  console.log("ae");
 
   switch (error.code) {
     case enumError.ROUTING_ERROR:

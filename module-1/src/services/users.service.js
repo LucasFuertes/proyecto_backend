@@ -1,6 +1,5 @@
 import UserDAO from "../dao/mongo/user.dao.js";
 import bcrypt from "bcrypt";
-import { GetUser } from "../dto/user.dto.js";
 
 const userDAO = new UserDAO();
 
@@ -37,6 +36,15 @@ export const loginUser = async (username, password) => {
     const result = await bcrypt.compare(password, dataUser.password);
     return result ? dataUser.toObject() : false;
   } catch {
+    return false;
+  }
+};
+
+export const newPassword = async (email) => {
+  try {
+    const requestedAccount = await userDAO.findByEmail(email);
+    return requestedAccount;
+  } catch (e) {
     return false;
   }
 };

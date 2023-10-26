@@ -61,9 +61,9 @@ app.use("/", usersRouterRender);
 app.use("/api/sessions", usersRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
+app.use("/api/auth", authManager);
 app.use("/products", prodsRouterRender);
 app.use("/chat", msgsRouterRender);
-app.use("/api/auth", authManager);
 app.use("/mockingproducts", mocks);
 
 const io = new SocketServer(httpServer);

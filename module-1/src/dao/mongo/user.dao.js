@@ -18,4 +18,8 @@ export default class UserDAO {
   create = async (newUser) => {
     return await userModel.insertMany(newUser);
   };
+
+  update = async (idUser, newData) => {
+    return await "";
+  };
 }

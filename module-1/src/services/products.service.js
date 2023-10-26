@@ -64,28 +64,32 @@ export const getProductById = async (pid) => {
 };
 
 export const postNewProduct = async (newProduct) => {
-  if (
-    !newProduct.title ||
-    !newProduct.description ||
-    !newProduct.price ||
-    !newProduct.code ||
-    !newProduct.stock ||
-    !newProduct.category
-  ) {
-    CustomError.createError({
-      message: "CANNOT NEW PRODUCT",
-      cause: newProductError(newProduct),
-      name: "New product error",
-      code: enumError.USER_INPUT_ERROR,
-    });
-  } else {
-    const product = await productDAO.create(newProduct);
-    const result = {
-      error: false,
-      msg: "Producto creado exitosamente",
-      info: product,
-    };
-    return result;
+  try {
+    if (
+      !newProduct.title ||
+      !newProduct.description ||
+      !newProduct.price ||
+      !newProduct.code ||
+      !newProduct.stock ||
+      !newProduct.category
+    ) {
+      CustomError.createError({
+        message: "CANNOT NEW PRODUCT",
+        cause: newProductError(newProduct),
+        name: "New product error",
+        code: enumError.USER_INPUT_ERROR,
+      });
+    } else {
+      const product = await productDAO.create(newProduct);
+      const result = {
+        error: false,
+        msg: "Producto creado exitosamente",
+        info: product,
+      };
+      return result;
+    }
+  } catch (e) {
+    return e;
   }
 };
 
