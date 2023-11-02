@@ -19,6 +19,9 @@ import usersRouter from "./routes/users.router.js";
 import { mocks } from "./routes/mocks.router.js";
 import ErrorHandlerMw from "./utils/error.middleware.js";
 import winston from "./utils/winston.js";
+import swaggerJSDoc from "swagger-jsdoc";
+import { serve, setup } from "swagger-ui-express";
+import swaggerConfig from "./utils/swagger.js";
 
 const app = express();
 
@@ -30,6 +33,8 @@ const dbConnection = mongoose.connect(
 dbConnection
   .then(() => console.log("¡Base de datos Mongo conectada!"))
   .catch((e) => console.error(e));
+
+const specs = swaggerJSDoc(swaggerConfig);
 
 app.use(express.static(`${__dirname}/public`));
 
@@ -56,6 +61,8 @@ app.use(
 InitLocalStrategy();
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use("/api/docs", serve, setup(specs));
 
 app.use("/", usersRouterRender);
 app.use("/api/sessions", usersRouter);
