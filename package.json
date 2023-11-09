@@ -5,7 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node module-1/src/app.js",
+    "dev": "nodemon module-1/src/app.js",
+    "mocha": "mocha module-1/test/mocha",
+    "super": "mocha module-1/test/supertest"
   },
   "keywords": [],
   "author": "",
@@ -31,5 +34,10 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
   }
 }
