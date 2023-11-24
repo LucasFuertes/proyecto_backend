@@ -1,6 +1,39 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/socket.js"></script>
 
+<header>
+  <nav class="navbar navbar-design">
+    <div class="options-design">
+      <a href="http://localhost:8080">Index</a>
+    </div>
+    <ul class="horizontal">
+      <li class="options-design">
+        <a href="http://localhost:8080/products">Products</a>
+      </li>
+      {{!-- {{#if userLogged}} --}}
+      <li class="options-design">
+        <a href="http://localhost:8080/register">Register</a>
+      </li>
+      <li class="options-design">
+        <a href="http://localhost:8080/login">Login</a>
+      </li>
+      {{!-- {{/if}} --}}
+      <li class="options-design">
+        <a href="">Cart</a>
+      </li>
+      <li class="options-design">
+        <a href="">Premium</a>
+      </li>
+      <li class="options-design">
+        <a href="">New</a>
+      </li>
+      <li class="options-design">
+        <a href="">Update</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
 <h1>¡Agrega un nuevo producto a la lista!</h1>
 <form id="productsForm" action="/products" method="post">
 <label for="title">Nombre del producto:</label>

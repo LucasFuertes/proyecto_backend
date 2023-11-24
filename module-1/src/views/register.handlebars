@@ -1,3 +1,36 @@
+<header>
+  <nav class="navbar navbar-design">
+    <div class="options-design">
+      <a href="http://localhost:8080">Index</a>
+    </div>
+    <ul class="horizontal">
+      <li class="options-design">
+        <a href="http://localhost:8080/products">Products</a>
+      </li>
+      {{!-- {{#if userLogged}} --}}
+      <li class="options-design">
+        <a href="http://localhost:8080/register">Register</a>
+      </li>
+      <li class="options-design">
+        <a href="http://localhost:8080/login">Login</a>
+      </li>
+      {{!-- {{/if}} --}}
+      <li class="options-design">
+        <a href="">Cart</a>
+      </li>
+      <li class="options-design">
+        <a href="">Premium</a>
+      </li>
+      <li class="options-design">
+        <a href="">New</a>
+      </li>
+      <li class="options-design">
+        <a href="">Update</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
 <h1 class="text-white">Regístrese</h1>
 
 <form class="text-black" action="/api/sessions/register" method="POST">

@@ -6,7 +6,11 @@ import * as UserService from "../services/users.service.js";
 
 const usersRouterRender = Router();
 
-usersRouterRender.get("/", logged, async (req, res) => {
+usersRouterRender.get("/", async (req, res) => {
+  res.render("home");
+});
+
+usersRouterRender.get("/login", logged, async (req, res) => {
   res.render("login");
 });
 
@@ -22,7 +26,7 @@ usersRouterRender.get("/newPassword", (req, res) => {
   res.render("password");
 });
 
-usersRouterRender.get("/logout", notLogged, (req, res) => {
+usersRouterRender.post("/signout", notLogged, (req, res) => {
   req.session.destroy((err) => {
     res.redirect("/");
   });
@@ -33,6 +37,7 @@ usersRouterRender.post(
   passport.authenticate("login", {
     successRedirect: "/products",
     failureRedirect: "/",
+    session: false,
   }),
   async (req, res) => {}
 );

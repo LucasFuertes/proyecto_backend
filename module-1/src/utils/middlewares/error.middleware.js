@@ -1,4 +1,4 @@
-import enumError from "./enumError.js";
+import enumError from "../enumError.js";
 
 const ErrorHandlerMw = async (error, req, res, next) => {
   console.log(error);

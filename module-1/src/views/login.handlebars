@@ -1,3 +1,36 @@
+<header>
+  <nav class="navbar navbar-design">
+    <div class="options-design">
+      <a href="http://localhost:8080">Index</a>
+    </div>
+    <ul class="horizontal">
+      <li class="options-design">
+        <a href="http://localhost:8080/products">Products</a>
+      </li>
+      {{!-- {{#if userLogged}} --}}
+      <li class="options-design">
+        <a href="http://localhost:8080/register">Register</a>
+      </li>
+      <li class="options-design">
+        <a href="http://localhost:8080/login">Login</a>
+      </li>
+      {{!-- {{/if}} --}}
+      <li class="options-design">
+        <a href="">Cart</a>
+      </li>
+      <li class="options-design">
+        <a href="">Premium</a>
+      </li>
+      <li class="options-design">
+        <a href="">New</a>
+      </li>
+      <li class="options-design">
+        <a href="">Update</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
 <h1 class="text-white">Iniciar sesión</h1>
 
 <div class="inline-flex items-center justify-center rounded-lg px-4 py-3 transition duration-500 ease-in-out text-black bg-brand-color hover:bg-blue-400 focus:outline-none">
@@ -14,6 +47,7 @@
   <p>¿No estás registrado?</p>
   <input class="text-white" type="submit" value="¡Regístrate!">
 </form>
+
 <form class="text-white" action="/recoverPassword" method="GET">
   <p>¿Olvidaste tu contraseña?</p>
   <input class="text-white" type="submit" value="¡Recuperala aquí!">

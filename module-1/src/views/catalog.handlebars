@@ -7,14 +7,14 @@
       <li class="options-design">
         <a href="http://localhost:8080/products">Products</a>
       </li>
-      {{!-- {{#if userLogged}} --}}
+      {{#if isUser}}
       <li class="options-design">
         <a href="http://localhost:8080/register">Register</a>
       </li>
       <li class="options-design">
         <a href="http://localhost:8080/login">Login</a>
       </li>
-      {{!-- {{/if}} --}}
+      {{/if}}
       <li class="options-design">
         <a href="">Cart</a>
       </li>
@@ -30,4 +30,23 @@
     </ul>
   </nav>
 </header>
-<div class="msg-welcome">¡Bienvenido a mi e-commerce personal!</div>
+{{status}}
+<h2>Lista de productos disponibles:</h2>
+{{#each status}}
+<div>
+  <b>Producto</b>
+  <ul>
+    <li>Nombre: {{title}}</li>
+    <li>Descripcion: {{this.description}}</li>
+    <li>Precio: ${{this.price}}</li>
+  </ul>
+  {{#if ../userStatus}}
+    <button>Agregar al carrito</button>
+    {{else}}
+    <p>//////////////////////////</p>
+  {{/if}}
+</div>
+{{/each}}
+<form action="/signout" method="POST">
+<input type="submit" value="Cerrar sesion">
+</form>

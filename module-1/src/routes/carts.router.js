@@ -3,11 +3,11 @@ import * as CartController from "../controllers/carts.controller.js";
 
 const cartsRouter = Router();
 
+cartsRouter.post("/", CartController.POSTNewCart);
+
 cartsRouter.get("/", CartController.GETAllCarts);
 
 cartsRouter.get("/:cid", CartController.GETCartById);
-
-cartsRouter.post("/", CartController.POSTNewCart);
 
 cartsRouter.post("/:cid/products/:pid", CartController.POSTAddProduct);
 

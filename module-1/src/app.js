@@ -17,7 +17,7 @@ import passport from "passport";
 import { authManager } from "./routes/auth.views.js";
 import usersRouter from "./routes/users.router.js";
 import { mocks } from "./routes/mocks.router.js";
-import ErrorHandlerMw from "./utils/error.middleware.js";
+import ErrorHandlerMw from "./utils/middlewares/error.middleware.js";
 import winston from "./utils/winston.js";
 import swaggerJSDoc from "swagger-jsdoc";
 import { serve, setup } from "swagger-ui-express";
@@ -49,7 +49,7 @@ app.use(
   session({
     secret: "87312yr92743e8r34",
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: new MongoStore({
       mongoUrl: `mongodb+srv://lucasfuertesmr:p75HJ00ZHRkRofxm@ecommerce.etxylxe.mongodb.net/ecommerce?retryWrites=true&w=majority`,
       ttl: 3600,
@@ -65,11 +65,11 @@ app.use(passport.session());
 app.use("/api/docs", serve, setup(specs));
 
 app.use("/", usersRouterRender);
+app.use("/products", prodsRouterRender);
 app.use("/api/sessions", usersRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/auth", authManager);
-app.use("/products", prodsRouterRender);
 app.use("/chat", msgsRouterRender);
 app.use("/mockingproducts", mocks);
 

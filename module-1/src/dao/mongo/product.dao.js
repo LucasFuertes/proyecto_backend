@@ -4,14 +4,17 @@ export default class ProductDAO {
   constructor() {}
 
   find = async ({ limit, page, sortOpcion }) => {
-    return await productModel.paginate({}, { limit, page, sort: sortOpcion });
+    return await productModel.paginate(
+      {},
+      { limit, page, sort: sortOpcion, lean: true }
+    );
   };
 
   // Nota: el parametro "query", por ahora, hará referencia al elemento "title" de los productos
   findWithFilters = async ({ limit, page, sortOpcion, query }) => {
     return await productModel.paginate(
       { title: query },
-      { limit, page, sort: sortOpcion }
+      { limit, page, sort: sortOpcion, lean: true }
     );
   };
 

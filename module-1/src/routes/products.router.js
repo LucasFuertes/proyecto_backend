@@ -3,11 +3,11 @@ import * as ProductController from "../controllers/products.controller.js";
 
 const productsRouter = Router();
 
+productsRouter.post("/", ProductController.POSTNewProduct);
+
 productsRouter.get("/", ProductController.GETAllProducts);
 
 productsRouter.get("/:pid", ProductController.GETProductById);
-
-productsRouter.post("/", ProductController.POSTNewProduct);
 
 productsRouter.put("/:pid", ProductController.PUTUpdateProduct);
 

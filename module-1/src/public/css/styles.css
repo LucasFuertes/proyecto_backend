@@ -16,8 +16,31 @@ body {
   color: white;
 }
 
+.msg-welcome {
+  margin: auto;
+}
+
 .design-a {
   text-decoration: none;
   color: black;
   background-color: yellow;
+}
+
+.horizontal {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.navbar-design {
+  background-color: rgb(97, 141, 10);
+}
+
+.options-design {
+  margin-left: 10px;
+  margin-right: 10px;
 }
