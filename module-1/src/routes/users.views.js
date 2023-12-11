@@ -26,30 +26,36 @@ usersRouterRender.get("/newPassword", (req, res) => {
   res.render("password");
 });
 
+usersRouterRender.get("/premium", (req, res) => {
+  res.render("premium");
+});
+
+// Iniciar sesión en la app:
+usersRouterRender.post(
+  "/login",
+  passport.authenticate("login", {
+    successRedirect: "/",
+    failureRedirect: "/login",
+  }),
+  async (req, res) => {}
+);
+
+// Registrarse en la app:
+usersRouterRender.post(
+  "/register",
+  passport.authenticate("register", {
+    successRedirect: "/",
+    failureRedirect: "/register",
+  }),
+  async (req, res) => {}
+);
+
+// Cerrar sesión en la app:
 usersRouterRender.post("/signout", notLogged, (req, res) => {
   req.session.destroy((err) => {
     res.redirect("/");
   });
 });
-
-usersRouterRender.post(
-  "/",
-  passport.authenticate("login", {
-    successRedirect: "/products",
-    failureRedirect: "/",
-    session: false,
-  }),
-  async (req, res) => {}
-);
-
-usersRouterRender.post(
-  "/register",
-  passport.authenticate("register", {
-    successRedirect: "/products",
-    failureRedirect: "/register",
-  }),
-  async (req, res) => {}
-);
 
 // RECUPERAR CONTRASEÑA: En proceso...
 usersRouterRender.post("/emailRecover", async (req, res) => {

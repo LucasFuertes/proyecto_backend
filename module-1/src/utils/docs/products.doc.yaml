@@ -1,0 +1,218 @@
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        title:
+          description: Nombre del producto
+          type: string
+        description:
+          description: Descripcion del producto
+          type: string
+        price: 
+          description: Precio del producto
+          type: integer
+        code:
+          description: Codigo del producto
+          type: integer
+        stock: 
+          description: Cantidad actual del producto
+          type: integer
+        category:
+          description: Categoria del producto
+          type: string
+      example:
+        title: Chicle
+        description: Descripcion de chicle
+        price: 25
+        code: 398613
+        stock: 1000
+        category: Golosinas
+  body:
+    putProduct:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+      example:
+        title: Caramelo
+        description: Descripcion de caramelo
+  responses:
+    successPost:
+      type: object
+      properties:
+        error:
+          description: State of false/true
+          type: boolean
+        msg:
+          description: Message of the response
+          type: string
+        info:
+          description: Response of the endpoint
+          type: object
+      example:
+        error: false
+        msg: string
+        info: {}
+    successGet:
+      type: object
+      properties:
+        error:
+          description: State of false/true
+          type: boolean
+        msg:
+          description: Message of the response
+          type: string
+        products:
+          description: Response of the endpoint
+          type: []
+      example:
+        error: false
+        msg: string
+        products: []
+    successGetOne:
+      type: object
+      properties:
+        error:
+          description: State of false/true
+          type: boolean
+        msg:
+          description: Message of the response
+          type: string
+        product:
+          description: Response of the endpoint
+          type: object
+      example:
+        error: false
+        msg: string
+        product: {}
+    successPut:
+      type: object
+      properties:
+        error:
+          description: State of false/true
+          type: boolean
+        msg:
+          description: Message of the response
+          type: string
+        status:
+          description: Status of the process
+          type: object
+        info:
+          description: Response of the endpoint
+          type: object
+      example:
+        error: false
+        msg: string
+        status: {}
+        info: {}
+    successDelete:
+      type: object
+      properties:
+        error:
+          description: State of false/true
+          type: boolean
+        msg:
+          description: Message of the response
+          type: string
+        status:
+          description: Status of the process
+          type: object
+        removedProduct:
+          description: Response of the endpoint
+          type: object
+      example:
+        error: false
+        msg: string
+        status: {}
+        removedProduct: {}
+paths:
+  /api/products:
+    post:
+      summary: Creación de un nuevo producto
+      tags:
+        - Product
+      requestBody:
+        required: true
+        content: 
+          application/json:
+            schema:
+              $ref: '#components/schemas/Product'
+      responses:
+        "201":
+          description:
+          content:
+            application/json:
+              schema:
+                $ref: '#components/responses/successPost'
+    get:
+      summary: Lectura de todos los productos
+      tags:
+        - Product
+      responses:
+        "200":
+          description:
+          content:
+            application/json:
+              schema:
+                $ref: '#components/responses/successGet'
+  /api/products/{pid}:
+    get:
+      summary: Lectura de un producto
+      parameters:
+        - name: pid
+          in: path
+          description: Id del producto
+          schema:
+            $type: string
+      tags:
+      - Product
+      responses:
+        "200":
+          description:
+          content:
+            application/json:
+              schema:
+                $ref: '#components/responses/successGetOne'
+    put:
+      summary: Modificar un producto
+      parameters:
+        - name: pid
+          in: path
+          description: Id del producto
+          schema:
+            $type: string
+      tags:
+      - Product
+      requestBody:
+        required: true
+        content: 
+          application/json:
+            schema:
+              $ref: '#components/body/putProduct'
+      responses:
+        "200":
+          description:
+          content:
+            application/json:
+              schema:
+                $ref: '#components/responses/successPut'
+    delete:
+      summary: Eliminar un producto
+      parameters:
+        - name: pid
+          in: path
+          description: Id del producto
+          schema:
+            $type: string
+      tags:
+      - Product
+      responses:
+        "200":
+          description:
+          content:
+            application/json:
+              schema:
+                $ref: '#components/responses/successDelete'

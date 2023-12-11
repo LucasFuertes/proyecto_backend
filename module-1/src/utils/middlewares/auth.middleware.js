@@ -15,7 +15,15 @@ export const onlyPremium = (req, res, next) => {
 };
 
 export const msgNotLogged = (req, res, next) => {
-  if (!req.user)
-    return res.send({ msg: "No tienes iniciado sesión en la página" });
+  if (!req.user) return res.send("No tienes iniciado sesión en la página");
+  next();
+};
+
+export const blockAdmin = (req, res, next) => {
+  // console.log("//////////bloqueo de admin////////////");
+  // console.log(req.user);
+  if (req.user.role == "admin") {
+    return res.send("Es admin, no puede acceder a esta ruta");
+  }
   next();
 };

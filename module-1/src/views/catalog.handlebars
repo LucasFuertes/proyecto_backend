@@ -7,19 +7,25 @@
       <li class="options-design">
         <a href="http://localhost:8080/products">Products</a>
       </li>
-      {{#if isUser}}
+      {{#unless isNotSession}}
       <li class="options-design">
         <a href="http://localhost:8080/register">Register</a>
       </li>
       <li class="options-design">
         <a href="http://localhost:8080/login">Login</a>
       </li>
-      {{/if}}
+      {{else}}
+      {{#if isUser}}
       <li class="options-design">
         <a href="">Cart</a>
       </li>
       <li class="options-design">
-        <a href="">Premium</a>
+        <a href="http://localhost:8080/premium">Premium</a>
+      </li>
+      {{else}}
+      {{#if isPremium}}
+      <li class="options-design">
+        <a href="">Cart</a>
       </li>
       <li class="options-design">
         <a href="">New</a>
@@ -27,26 +33,48 @@
       <li class="options-design">
         <a href="">Update</a>
       </li>
+      {{else}}
+      {{#if isAdmin}}
+      <li class="options-design">
+        <a href="">New</a>
+      </li>
+      <li class="options-design">
+        <a href="">Update</a>
+      </li>
+      {{/if}}
+      {{/if}}
+      {{/if}}
+      {{/unless}}
     </ul>
   </nav>
 </header>
-{{status}}
+<div>
+  {{#if infoUser}}
+  <p>Informacion de usuario:</p>
+  <p>Nombre de usuario: {{username}}</p>
+  <p>Rol: {{role}}</p>
+  {{else}}
+  <p>No hay usuario loggeado</p>
+  {{/if}}
+</div>
 <h2>Lista de productos disponibles:</h2>
-{{#each status}}
+{{#each productsList}}
 <div>
   <b>Producto</b>
   <ul>
-    <li>Nombre: {{title}}</li>
+    <li>Nombre: {{this.title}}</li>
     <li>Descripcion: {{this.description}}</li>
     <li>Precio: ${{this.price}}</li>
   </ul>
-  {{#if ../userStatus}}
+  {{#if ../notAdmin}}
     <button>Agregar al carrito</button>
     {{else}}
     <p>//////////////////////////</p>
   {{/if}}
 </div>
 {{/each}}
+{{#if isNotSession}}
 <form action="/signout" method="POST">
 <input type="submit" value="Cerrar sesion">
 </form>
+{{/if}}

@@ -1,0 +1,110 @@
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        products:
+          description: Lista de productos añadidos al carrito
+          type: []
+      example:
+        products: []
+  responses:
+    successPost:
+      type: object
+      properties:
+        error:
+          description: State of false/true
+          type: boolean
+        msg:
+          description: Message of the response
+          type: string
+        info:
+          description: Response of the endpoint
+          type: []
+      example:
+        error: false
+        msg: string
+        info: []
+    successGet:
+      type: object
+      properties:
+        error:
+          description: State of false/true
+          type: boolean
+        msg:
+          description: Message of the response
+          type: string
+        info:
+          description: Response of the endpoint
+          type: []
+      example:
+        error: false
+        msg: string
+        info: []
+    successPut:
+    successDelete:
+paths:
+  /api/carts:
+    post:
+      summary: Creación de un nuevo carrito
+      tags:
+        - Cart
+      responses:
+        "201":
+          description:
+          content:
+            application/json:
+              schema:
+                $ref: '#components/responses/successPost'
+    get:
+      summary: Lectura del carrito del usuario
+      tags:
+        - Cart
+      responses:
+        "200":
+          description:
+          content:
+            application/json:
+              schema:
+                $ref: '#components/responses/successGet'
+  /api/carts/{cid}:
+    put:
+      summary: Actualizar cantidad de un producto en el carrito
+      parameters:
+        - name: cid
+          in: path
+          description: Id del producto
+          schema:
+            $type: string
+      tags:
+      - Cart
+      requestBody:
+        required: true
+        content: 
+          application/json:
+            schema:
+              $ref: '#components/body/putProduct'
+      responses:
+        "200":
+          description:
+          content:
+            application/json:
+              schema:
+                $ref: '#components/responses/successPut'
+    delete:
+      summary: Eliminar un producto del carrito
+      parameters:
+        - name: cid
+          in: path
+          description: Id del producto
+          schema:
+            $type: string
+      tags:
+      - Cart
+      responses:
+        "200":
+          description:
+          content:
+            application/json:
+              schema:
+                $ref: '#components/responses/successPut'

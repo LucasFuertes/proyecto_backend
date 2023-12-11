@@ -5,6 +5,21 @@ import ProductDAO from "../dao/mongo/product.dao.js";
 const cartDAO = new CartDAO();
 const productDAO = new ProductDAO();
 
+export const postNewCart = async () => {
+  try {
+    const cart = await cartDAO.create();
+    const result = { error: false, msg: "¡Carrito creado!", info: cart };
+    return result;
+  } catch (e) {
+    const result = {
+      error: true,
+      msg: "Error, no se pudo crear el carrito",
+      info: e,
+    };
+    return result;
+  }
+};
+
 export const getAllCarts = async () => {
   try {
     const carts = await cartDAO.find();
@@ -43,16 +58,48 @@ export const getCartById = async (id) => {
   }
 };
 
-export const postNewCart = async () => {
+export const putQuantity = async (cartId, productId, newQuantity) => {
   try {
-    const cart = await cartDAO.create();
-    const result = { error: false, msg: "¡Carrito creado!", info: cart };
+    const cart = await cartDAO.findById(cartId);
+    const indexProduct = cart.products.findIndex(
+      (prod) => prod.product._id == cart._id
+    );
+    const selectedProduct = cart.products.find(
+      (prod) => prod.product._id == productId
+    );
+    selectedProduct.quantity = selectedProduct.quantity + newQuantity.quantity;
+    cart.products[indexProduct] = selectedProduct;
+    await cartDAO.update(cart._id, cart);
+    const updatedCart = await cartDAO.findById(cart._id);
+    const result = {
+      error: false,
+      msg: "¡Cantidad del producto actualizada!",
+      info: updatedCart,
+    };
     return result;
   } catch (e) {
     const result = {
       error: true,
-      msg: "Error, no se pudo crear el carrito",
+      msg: "Error, no se pudo actualizar la cantidad del producto solicitado",
       info: e,
+    };
+    return result;
+  }
+};
+
+export const deleteAllProducts = async (cartId) => {
+  try {
+    const cart = await cartDAO.findById(cartId);
+    cart.products = [];
+    await cartDAO.update(cart._id, cart);
+    const cartEmpty = await cartDAO.findById(cart._id);
+    const result = { error: false, msg: "Carrito vaciado", update: cartEmpty };
+    return result;
+  } catch (e) {
+    const result = {
+      error: true,
+      msg: "Error, no se pudo vaciar el carrito",
+      error: e,
     };
     return result;
   }
@@ -99,53 +146,6 @@ export const deleteRemoveProduct = async (cartId, productId) => {
     const result = {
       error: true,
       msg: "Error, no se ha podido remover el producto solicitado",
-      info: e,
-    };
-    return result;
-  }
-};
-
-export const deleteAllProducts = async (cartId) => {
-  try {
-    const cart = await cartDAO.findById(cartId);
-    cart.products = [];
-    await cartDAO.update(cart._id, cart);
-    const cartEmpty = await cartDAO.findById(cart._id);
-    const result = { error: false, msg: "Carrito vaciado", update: cartEmpty };
-    return result;
-  } catch (e) {
-    const result = {
-      error: true,
-      msg: "Error, no se pudo vaciar el carrito",
-      error: e,
-    };
-    return result;
-  }
-};
-
-export const putQuantity = async (cartId, productId, newQuantity) => {
-  try {
-    const cart = await cartDAO.findById(cartId);
-    const indexProduct = cart.products.findIndex(
-      (prod) => prod.product._id == cart._id
-    );
-    const selectedProduct = cart.products.find(
-      (prod) => prod.product._id == productId
-    );
-    selectedProduct.quantity = selectedProduct.quantity + newQuantity.quantity;
-    cart.products[indexProduct] = selectedProduct;
-    await cartDAO.update(cart._id, cart);
-    const updatedCart = await cartDAO.findById(cart._id);
-    const result = {
-      error: false,
-      msg: "¡Cantidad del producto actualizada!",
-      info: updatedCart,
-    };
-    return result;
-  } catch (e) {
-    const result = {
-      error: true,
-      msg: "Error, no se pudo actualizar la cantidad del producto solicitado",
       info: e,
     };
     return result;

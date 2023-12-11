@@ -8,7 +8,7 @@ const swaggerConfig = {
       description: "Tienda de articulos",
     },
   },
-  apis: [__dirname + "/docs/*.yaml"],
+  apis: [`${__dirname}/utils/docs/*.yaml`],
 };
 
 export default swaggerConfig;

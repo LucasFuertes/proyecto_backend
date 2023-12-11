@@ -21,7 +21,7 @@ import ErrorHandlerMw from "./utils/middlewares/error.middleware.js";
 import winston from "./utils/winston.js";
 import swaggerJSDoc from "swagger-jsdoc";
 import { serve, setup } from "swagger-ui-express";
-import swaggerConfig from "./utils/swagger.js";
+import swaggerConfig from "./config/swagger.js";
 
 const app = express();
 
@@ -33,8 +33,6 @@ const dbConnection = mongoose.connect(
 dbConnection
   .then(() => console.log("¡Base de datos Mongo conectada!"))
   .catch((e) => console.error(e));
-
-const specs = swaggerJSDoc(swaggerConfig);
 
 app.use(express.static(`${__dirname}/public`));
 
@@ -62,6 +60,7 @@ InitLocalStrategy();
 app.use(passport.initialize());
 app.use(passport.session());
 
+const specs = swaggerJSDoc(swaggerConfig);
 app.use("/api/docs", serve, setup(specs));
 
 app.use("/", usersRouterRender);

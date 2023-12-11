@@ -7,25 +7,11 @@
       <li class="options-design">
         <a href="http://localhost:8080/products">Products</a>
       </li>
-      {{!-- {{#if userLogged}} --}}
       <li class="options-design">
         <a href="http://localhost:8080/register">Register</a>
       </li>
       <li class="options-design">
         <a href="http://localhost:8080/login">Login</a>
-      </li>
-      {{!-- {{/if}} --}}
-      <li class="options-design">
-        <a href="">Cart</a>
-      </li>
-      <li class="options-design">
-        <a href="">Premium</a>
-      </li>
-      <li class="options-design">
-        <a href="">New</a>
-      </li>
-      <li class="options-design">
-        <a href="">Update</a>
       </li>
     </ul>
   </nav>
@@ -37,7 +23,7 @@
   <a href="/api/auth/github">Acceder al sitio con Github</a>
 </div>
 
-<form class="text-black" action="/" method="POST">
+<form class="text-black" action="/login" method="POST">
   <input type="text" name="username" placeholder="Your username">
   <input type="password" name="password" placeholder="Your password">
   <input class="text-white" type="submit" value="Iniciar sesión">

@@ -3,6 +3,7 @@ import local from "passport-local";
 import * as UserService from "../services/users.service.js";
 import GithubStrategy from "passport-github2";
 import { GetUser } from "../dto/user.dto.js";
+import { loginTemporalAdmin } from "../services/admin.service.js";
 
 local.Strategy;
 
@@ -39,20 +40,18 @@ const InitLocalStrategy = () => {
     new local.Strategy(
       { passReqToCallback: true },
       async (req, username, password, done) => {
-        // El que funciona:
-        // const dataUser = await UserService.loginUser(username, password);
-        // console.log(dataUser);
-        // if (!dataUser) return done("Nombre de usuario o contraseña incorrecta");
-        // return done(null, dataUser);
         console.log(username, password);
         // El que no funciona:
         if (username == "admincoder@gmail.com" && password == "coder123") {
-          const userAdmin = {
-            name: "Lucas",
+          const data = {
+            username: "Administrador Lucas Fuertes",
             email: username,
-            rol: "admin",
+            role: "admin",
           };
-          return done(null, userAdmin);
+          const admin = await loginTemporalAdmin(data);
+
+          // console.log(admin);
+          return done(null, admin);
         } else {
           const dataUser = await UserService.loginUser(username, password);
           console.log(dataUser);

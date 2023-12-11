@@ -9,7 +9,8 @@ import * as ProductService from "../services/products.service.js";
 const prodsRouterRender = Router();
 
 prodsRouterRender.get("/", async (req, res) => {
-  let userExist = false;
+  let sessionExist = false;
+  let infoUser = false;
   const { limit = 5, page = 1, order, query } = req.query;
   const status = await ProductService.getAllProducts({
     limit,
@@ -20,14 +21,38 @@ prodsRouterRender.get("/", async (req, res) => {
 
   console.log("//////Existe?///////");
   console.log(req.user);
-  // console.log(status);
-  if (req.user) userExist = true;
 
-  res.render("catalog", {
-    status: status.products,
-    userStatus: userExist,
-    isUser: !userExist,
-  });
+  // console.log("//////Elemento de user?/////");
+  // console.log(username || "nada");
+  // console.log(role || "nada");
+  // console.log(role == "user");
+  // console.log(status);
+
+  if (req.user) {
+    sessionExist = true;
+    infoUser = true;
+
+    const { username, role } = req.user;
+
+    res.render("catalog", {
+      isNotSession: sessionExist,
+      isUser: role == "user",
+      isPremium: role == "premium",
+      isAdmin: role == "admin",
+      infoUser,
+      username,
+      role,
+      productsList: status.products,
+      notAdmin: role != "admin",
+    });
+  } else {
+    res.render("catalog", {
+      isNotSession: sessionExist,
+      infoUser,
+      productsList: status.products,
+      notAdmin: false,
+    });
+  }
 });
 
 prodsRouterRender.get(

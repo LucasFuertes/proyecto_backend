@@ -7,19 +7,25 @@
       <li class="options-design">
         <a href="http://localhost:8080/products">Products</a>
       </li>
-      {{!-- {{#if userLogged}} --}}
+      {{#unless isNotSession}}
       <li class="options-design">
         <a href="http://localhost:8080/register">Register</a>
       </li>
       <li class="options-design">
         <a href="http://localhost:8080/login">Login</a>
       </li>
-      {{!-- {{/if}} --}}
+      {{else}}
+      {{#if isUser}}
       <li class="options-design">
         <a href="">Cart</a>
       </li>
       <li class="options-design">
         <a href="">Premium</a>
+      </li>
+      {{else}}
+      {{#if isPremium}}
+      <li class="options-design">
+        <a href="">Cart</a>
       </li>
       <li class="options-design">
         <a href="">New</a>
@@ -27,6 +33,18 @@
       <li class="options-design">
         <a href="">Update</a>
       </li>
+      {{else}}
+      {{#if isAdmin}}
+      <li class="options-design">
+        <a href="">New</a>
+      </li>
+      <li class="options-design">
+        <a href="">Update</a>
+      </li>
+      {{/if}}
+      {{/if}}
+      {{/if}}
+      {{/unless}}
     </ul>
   </nav>
 </header>

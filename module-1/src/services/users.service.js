@@ -40,6 +40,15 @@ export const loginUser = async (username, password) => {
   }
 };
 
+export const updateRole = async (idUser, newData) => {
+  try {
+    const dataUser = await userDAO.update(idUser, newData);
+    return dataUser;
+  } catch (e) {
+    return false;
+  }
+};
+
 export const newPassword = async (email) => {
   try {
     const requestedAccount = await userDAO.findByEmail(email);
