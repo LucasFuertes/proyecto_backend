@@ -27,3 +27,12 @@ export const blockAdmin = (req, res, next) => {
   }
   next();
 };
+
+export const blockUser = (req, res, next) => {
+  // console.log("//////////bloqueo de user////////////");
+  // console.log(req.user);
+  if (req.user.role == "user") {
+    return res.send("Es user, no puede acceder a esta ruta");
+  }
+  next();
+};

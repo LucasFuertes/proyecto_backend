@@ -7,18 +7,17 @@
       <li class="options-design">
         <a href="http://localhost:8080/products">Products</a>
       </li>
-      {{#if isUser}}
-      <li class="options-design">
-        <a href="http://localhost:8080/cart">Cart</a>
-      </li>
-      <li class="options-design">
-        <a href="http://localhost:8080/prem">Premium</a>
-      </li>
-      {{else}}
       {{#if isPremium}}
       <li class="options-design">
         <a href="http://localhost:8080/cart">Cart</a>
       </li>
+      <li class="options-design">
+        <a href="http://localhost:8080/newProduct">New</a>
+      </li>
+      <li class="options-design">
+        <a href="http://localhost:8080/updateProduct">Update</a>
+      </li>
+      {{#if isAdmin}}
       <li class="options-design">
         <a href="http://localhost:8080/newProduct">New</a>
       </li>
@@ -30,7 +29,5 @@
     </ul>
   </nav>
 </header>
-<br>
-<form action="">
-  <input class="inline-flex items-center justify-center rounded-lg px-4 py-3 transition duration-500 ease-in-out text-black bg-brand-color hover:bg-blue-400 focus:outline-none" type="submit" value="Crear carrito">
-</form>
+
+<h1>Aqui se actualiza el producto</h1>

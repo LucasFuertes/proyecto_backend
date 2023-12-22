@@ -2,7 +2,6 @@ import passport from "passport";
 import local from "passport-local";
 import * as UserService from "../services/users.service.js";
 import GithubStrategy from "passport-github2";
-import { GetUser } from "../dto/user.dto.js";
 import { loginTemporalAdmin } from "../services/admin.service.js";
 
 local.Strategy;

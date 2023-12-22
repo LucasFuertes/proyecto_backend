@@ -17,7 +17,7 @@
       {{else}}
       {{#if isUser}}
       <li class="options-design">
-        <a href="">Cart</a>
+        <a href="http://localhost:8080/cart">Cart</a>
       </li>
       <li class="options-design">
         <a href="http://localhost:8080/premium">Premium</a>
@@ -25,21 +25,21 @@
       {{else}}
       {{#if isPremium}}
       <li class="options-design">
-        <a href="">Cart</a>
+        <a href="http://localhost:8080/cart">Cart</a>
       </li>
       <li class="options-design">
-        <a href="">New</a>
+        <a href="http://localhost:8080/newProduct">New</a>
       </li>
       <li class="options-design">
-        <a href="">Update</a>
+        <a href="http://localhost:8080/updateProduct">Update</a>
       </li>
       {{else}}
       {{#if isAdmin}}
       <li class="options-design">
-        <a href="">New</a>
+        <a href="http://localhost:8080/newProduct">New</a>
       </li>
       <li class="options-design">
-        <a href="">Update</a>
+        <a href="http://localhost:8080/updateProduct">Update</a>
       </li>
       {{/if}}
       {{/if}}
@@ -74,7 +74,7 @@
 </div>
 {{/each}}
 {{#if isNotSession}}
-<form action="/signout" method="POST">
+<form action="/api/auth/signout" method="POST">
 <input type="submit" value="Cerrar sesion">
 </form>
 {{/if}}
